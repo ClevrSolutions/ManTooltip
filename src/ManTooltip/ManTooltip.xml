@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget id="ManTooltip.widget.ManTooltip" needsEntityContext="false" xmlns="http://www.mendix.com/widget/1.0/">
+  <name>Mansystems Tooltip</name>
+  <description>Displays an info button with a tooltip.</description>
+
+  <icon>
+    iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAMAUExURUKg/0ij/0uk/0+m/1Wp/1aq/1qs/16u/2Cv/2Kw/2mz/3O5/3m7/3m8/3y8/3+//4LA/4TA/4vF/43G/5LI/5TJ/5vM/6LQ/6fS/6jT/7LY/8bi/8rk/8zl/8/n/9rs/97t/9/u/+Dv/+by/+nz/+n0/+72//T5//v9/////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFfU8csAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuNvyMY98AAACISURBVChTXY7ZDsIwDATN0XKVIxylpE2BctX//4PsxgEk9mXHI9my6F+SuDWX3iiK40REBrtHEn2BkRkHEy7NItmdoiY6bVhbig3pkyfEFL1u21MUZ4ghOjvYigSIOSHdkA6iROelhhWbRzvAwnvPI1X8owJZCnvsa9wrCb3uZ6N8WRNN/KL6BruuFX8oQdPJAAAAAElFTkSuQmCC
+  </icon>
+
+  <properties>
+		<property key="text" type="translatableString" multiline="true" required="true">
+      <caption>Help text</caption>
+      <category>Behavior</category>
+      <description>The help text which will be displayed when the user clicks or hovers the Help Text Viewer</description>
+    </property>
+    <property key="showonhover" type="boolean" defaultValue="false">
+      <caption>Show on hover</caption>
+      <category>Behavior</category>
+      <description>Show the help text when the mouse hovers over the button</description>
+    </property>
+	  <property key="closeClick" type="boolean" defaultValue="true">
+      <caption>Close on click</caption>
+      <category>Behavior</category>
+      <description>Closes the button when clicking anywhere on the page</description>
+    </property>
+		<property key="width" type="integer" defaultValue="300">
+      <caption>Width</caption>
+      <category>Common</category>
+      <description>Width of the help box in pixels</description>
+    </property>
+		<property key="height" type="integer" defaultValue="300">
+      <caption>Height</caption>
+      <category>Common</category>
+      <description>Maximum height of the help box in pixels</description>
+    </property>
+    <property key="position" type="enumeration" required="true" defaultValue="popup">
+        <caption>Positioning</caption>
+        <category>Common</category>
+        <description>
+        As popup - Item is rendered on top of all content (left / right is determined automatically)
+        Left aligned - Item is rendered on the left of the help button
+        Right aligned - Item is rendered on the right of the help button
+        
+        Use left or right when the helptext should be hidden if the button is hidden (For example when using in combination with tab control). Use popup if the helptext should be visible outside the current form. See the screenshots for examples.
+        </description>
+        <enumerationValues>
+            <enumerationValue key="popup">Popup</enumerationValue>
+            <enumerationValue key="left">Left</enumerationValue>
+            <enumerationValue key="right">Right</enumerationValue>
+        </enumerationValues>    
+    </property>
+  </properties>
+</widget>
+

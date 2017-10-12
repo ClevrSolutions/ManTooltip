@@ -1,0 +1,41 @@
+div[class^='mx-name-mansystemsTooltip'] {
+	outline: none;
+}
+
+.ManTooltipButton {
+	cursor: pointer;
+}
+
+.ManTooltipBox {
+	/*required properties: */
+	display : none;
+	position: absolute;
+	text-align: left;
+	overflow : auto;
+	overflow-x : hidden;
+	overflow-y : auto;
+	z-index : 10000;
+	white-space: normal !important;
+	text-transform: none !important;
+	border-radius: 4px;
+    font-size: 1em;
+    line-height: 1.4;
+    font-weight: normal;
+}
+
+.ManTooltipBox, .ManTooltipRow {
+	padding: 7px;
+	cursor: default;
+}
+
+.ManTooltipRow {
+	padding-left: 30px;
+	height: auto;
+	width: auto;
+	overflow-x : hidden;
+	overflow-y : auto;
+}
+
+.dj_ie6 .ManTooltipRow, .dj_ie7 .ManTooltipRow {
+    background-image : url(ManTooltip/widget/ui/images/help.png);
+}
