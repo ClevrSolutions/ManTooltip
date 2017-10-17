@@ -4,9 +4,21 @@ These buttons display a help message when clicked or hovered.
 
 Optionally, the buttons can be hidden by default, with a global switch (the Help Text Trigger) to show or hide them. 
 */
-dojo.provide("ManTooltip.widget.ManTooltip");
+define([
+    "dojo/_base/declare",
+    "mxui/widget/_WidgetBase",
+    "mxui/dom",
+    "dojo/_base/lang",
+    "dojo/html",
+	"dojo/dom-style",
+	"dojo/_base/window",
+	"dojo/query",
+	"dojo/topic",
+	"dojo/dom-geometry"
+], function (declare, _WidgetBase, dom, lang, html, domStyle, win, query, topic, domGeom) {
+    'use strict';
 
-mendix.widget.declare('ManTooltip.widget.ManTooltip', {
+    return declare('ManTooltip.widget.ManTooltip', [ _WidgetBase ], {
 		
 	inputargs: {
 		text : '',
@@ -30,55 +42,57 @@ mendix.widget.declare('ManTooltip.widget.ManTooltip', {
 		logger.debug(this.id + ".postCreate");
 
 		//img node
-		this.imgNode = mendix.dom.div({
+		this.imgNode = dom.create("div", {
 			'class' : 'text-info ManTooltipButton glyphicon glyphicon-info-sign'
 		});
 		this.domNode.appendChild(this.imgNode);
-		this.connect(this.imgNode, 'onclick', dojo.hitch(this, this.toggleHelp, true));
+		this.connect(this.imgNode, 'onclick', lang.hitch(this, this.toggleHelp, true));
 		
 		if (this.showonhover) {
-			this.connect(this.imgNode, 'onmouseenter', dojo.hitch(this, this.showHelp, true, false));
-			this.connect(this.imgNode, 'onmouseleave', dojo.hitch(this, this.showHelp, false, false));
+			this.connect(this.imgNode, 'onmouseenter', lang.hitch(this, this.showHelp, true, false));
+			this.connect(this.imgNode, 'onmouseleave', lang.hitch(this, this.showHelp, false, false));
 		}
 		
 		//help node
 		this.createHelp();
 		
 		//this.stateChange(this.startvisible);
-		this.handle = dojo.subscribe(this.topic, this, this.stateChange);
-		
-		this.actLoaded();
+		this.handle = topic.subscribe(this.topic, this, this.stateChange);
+
+		this.handle.remove();
 	},
 
 	stateChange : function(newstate) {
 		if (newstate)
-			dojo.style(this.imgNode, "display", "block")
+		domStyle.set(this.imgNode, "display", "block")
 	},
 	
 	createHelp : function () {
-		this.helpNode = mxui.dom.div({'class' : 'ManTooltipBox label label-primary'});
-		dojo.style(this.helpNode, 'display', 'none');
+		this.helpNode = dom.create("div", {'class' : 'ManTooltipBox label label-primary'});
+		domStyle.set(this.helpNode, 'display', 'none');
 		var input = this.text.replace(/\n/g, '<br />');
-		dojo.html.set(this.helpNode, input);
-		dojo.style(this.helpNode, {
+		html.set(this.helpNode, input);
+		domStyle.set(this.helpNode, {
 			'width' : this.width + 'px',
 			'maxHeight' : this.height + 'px'
 		});
-		this.connect(this.helpNode, 'onclick', dojo.hitch(this, this.toggleHelp, true));
+		this.connect(this.helpNode, 'onclick', lang.hitch(this, this.toggleHelp, true));
 		//document.body.appendChild(this.helpNode);
 		if (this.position == 'popup')
-			dojo.body().appendChild(this.helpNode);
+			win.body().appendChild(this.helpNode);
 		else {
 			this.domNode.appendChild(this.helpNode);
-			dojo.style(this.domNode, 'position', 'relative');
+			domStyle.set(this.domNode, 'position', 'relative');
 		}
 	},
 
 	toggleHelp : function(clicked, e) {
 		this.helpvisible = !this.helpvisible;
 		this.showHelp(this.helpvisible, clicked);
-		if (e)
-			dojo.stopEvent(e);
+		if (e) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
 	},
 	
 	windowClick : function () {
@@ -87,7 +101,7 @@ mendix.widget.declare('ManTooltip.widget.ManTooltip', {
 			this.windowEvt = null;
 		}
 		this.helpvisible = false;
-		dojo.style(this.helpNode, 'display', 'none');
+		domStyle.set(this.helpNode, 'display', 'none');
 	},
 	
 	showHelp : function(show, clicked) {
@@ -96,15 +110,15 @@ mendix.widget.declare('ManTooltip.widget.ManTooltip', {
 				this.windowEvt = this.connect(document.body, 'onclick', this.windowClick);
 
 			if (this.position == 'popup') {
-				var coords = dojo.coords(this.imgNode, true);
-				dojo.style(this.helpNode, {
+				var coords = domGeom.position(this.imgNode, true);
+				domStyle.set(this.helpNode, {
 					'display' : 'block',
 					'top' : (coords.y + 30)+'px',
 					'left': (window.innerWidth < coords.x + 30 + this.width ? coords.x - this.height - 30 : coords.x + 30)+'px'
 				});
 			}
 			else {
-				dojo.style(this.helpNode, {
+				domStyle.set(this.helpNode, {
 					'display' : 'block',
 					'top' : '30px',
 					'left': this.position == 'right' ? '30px' : (-30 - this.width) + 'px'
@@ -114,16 +128,16 @@ mendix.widget.declare('ManTooltip.widget.ManTooltip', {
 			var currentNode = this.helpNode;
 			var self = this;
 
-			dojo.query('div[class^=mx-name-ManTooltip').forEach(function(node) {
+			query('div[class^=mx-name-ManTooltip').forEach(function(node) {
 				var widget = dijit.registry.getEnclosingWidget(node);
 				if (widget != self) {
 					widget.helpvisible = false;
 				}
 			});
 
-			dojo.query('.ManTooltipBox:style="display:block"').forEach(function(node) {
+			query('.ManTooltipBox:style="display:block"').forEach(function(node) {
 				if (node != currentNode) {
-					dojo.style(node, {
+					domStyle.set(node, {
 						'display' : 'none'
 					});
 				}
@@ -131,7 +145,7 @@ mendix.widget.declare('ManTooltip.widget.ManTooltip', {
 		}
 		else {
 			this.helpvisible = false;
-			dojo.style(this.helpNode, 'display', 'none');
+			domStyle.set(this.helpNode, 'display', 'none');
 		}
 	},
 	
@@ -154,10 +168,13 @@ mendix.widget.declare('ManTooltip.widget.ManTooltip', {
 			if (this.helpNode != null)
 				document.body.removeChild(this.helpNode);
 			if (this.handle != null)
-				dojo.unsubscribe(this.handle);
+			topic.unsubscribe(this.handle);
 		}
 		catch(e) {
 			logger.warn("error on helptextviewer unload: " + e);
 		}
 	}
-});
+		});
+	});
+
+require([ "ManTooltip/widget/ManTooltip" ]);
