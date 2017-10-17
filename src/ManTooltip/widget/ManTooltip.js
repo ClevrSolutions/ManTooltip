@@ -5,17 +5,17 @@ These buttons display a help message when clicked or hovered.
 Optionally, the buttons can be hidden by default, with a global switch (the Help Text Trigger) to show or hide them. 
 */
 define([
-    'dojo/_base/declare',
-    'mxui/widget/_WidgetBase',
-    'mxui/dom',
-    'dojo/_base/lang',
+    "dojo/_base/declare",
+    "mxui/widget/_WidgetBase",
+    "mxui/dom",
+    "dojo/_base/lang",
     "dojo/html",
 	"dojo/dom-style",
 	"dojo/_base/window",
 	"dojo/query",
-	"dojo/_base/html",
-	"dojo/topic"
-], function (declare, _WidgetBase, dom, lang, html, domStyle, win, query, dojoHtml, topic) {
+	"dojo/topic",
+	"dojo/dom-geometry"
+], function (declare, _WidgetBase, dom, lang, html, domStyle, win, query, topic, domGeom) {
     'use strict';
 
     return declare('ManTooltip.widget.ManTooltip', [ _WidgetBase ], {
@@ -60,8 +60,6 @@ define([
 		this.handle = topic.subscribe(this.topic, this, this.stateChange);
 
 		this.handle.remove();
-		
-		this.actLoaded();
 	},
 
 	stateChange : function(newstate) {
@@ -112,7 +110,7 @@ define([
 				this.windowEvt = this.connect(document.body, 'onclick', this.windowClick);
 
 			if (this.position == 'popup') {
-				var coords = dojoHtml.coords(this.imgNode, true);
+				var coords = domGeom.position(this.imgNode, true);
 				domStyle.set(this.helpNode, {
 					'display' : 'block',
 					'top' : (coords.y + 30)+'px',
@@ -176,7 +174,7 @@ define([
 			logger.warn("error on helptextviewer unload: " + e);
 		}
 	}
-	});
+		});
 	});
 
-require([ 'ManTooltip/widget/ManTooltip' ]);
+require([ "ManTooltip/widget/ManTooltip" ]);
