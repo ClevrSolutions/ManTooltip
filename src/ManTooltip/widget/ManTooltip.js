@@ -38,8 +38,32 @@ define([
 	helpvisible: false,
 	windowEvt : null,
 	
-  postCreate : function(){
-		logger.debug(this.id + ".postCreate");
+	log() {
+		var args = Array.prototype.slice.call(arguments);
+		if (this.id) {
+			args.unshift(this.id);
+		}
+		if (mx && mx.logger && mx.logger.debug) {
+			mx.logger.debug.apply(mx.logger, args);
+		} else {
+			logger.debug.apply(logger, args);
+		}
+	},
+
+	warn() {
+		var args = Array.prototype.slice.call(arguments);
+		if (this.id) {
+			args.unshift(this.id);
+		}
+		if (mx && mx.logger && mx.logger.warn) {
+			mx.logger.warn.apply(mx.logger, args);
+		} else {
+			logger.warn.apply(logger, args);
+		}
+	},
+
+	postCreate : function(){
+		this.log(".postCreate");
 
 		//img node
 		this.imgNode = dom.create("div", {
@@ -163,7 +187,7 @@ define([
 			if (this.windowEvt != null) {
 				this.disconnect(this.windowEvt);
 				this.windowEvt = null;
-				logger.debug(this.id + ".uninitialize");
+				this.log(".uninitialize");
 			}
 			if (this.helpNode != null)
 				document.body.removeChild(this.helpNode);
@@ -171,7 +195,7 @@ define([
 			topic.unsubscribe(this.handle);
 		}
 		catch(e) {
-			logger.warn("error on helptextviewer unload: " + e);
+			this.warn("error on helptextviewer unload: " + e);
 		}
 	}
 		});
